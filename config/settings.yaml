@@ -1,0 +1,126 @@
+# ============================================================================
+# POSAS-MLLM Benchmark — Configuration
+# ============================================================================
+# Five multimodal LLMs are compared under identical prompt (posas_prompt.txt)
+# and standardised generation settings. Add/remove models here to include your
+# own — Stage 3 will pick them up automatically as long as `env_key` is set.
+# ============================================================================
+
+prompt_version: "v4"
+
+# --- Image Preprocessing ---------------------------------------------------
+preprocessing:
+  max_dimension: 1024
+  jpeg_quality: 85
+  pad_color: [0, 0, 0]
+  resampling: "lanczos"
+  output_format: "JPEG"
+  strip_exif: true
+  auto_orient: true
+
+# --- API Models -------------------------------------------------------------
+# `display_name` (optional) is used as the column prefix in the exported
+# Excel/CSV. If omitted, the model key is used.
+models:
+  chatgpt:
+    provider: "openai"
+    model_string: "gpt-5.4"
+    adapter: "openai_adapter"
+    env_key: "OPENAI_API_KEY"
+    display_name: "GPT_5_4"
+    temperature: 0
+    max_tokens: 1500
+    seed: 42
+    image_detail: "high"
+    pricing_input_per_1m: 2.50
+    pricing_output_per_1m: 15.00
+
+  claude:
+    provider: "anthropic"
+    model_string: "claude-sonnet-5"
+    adapter: "anthropic_adapter"
+    env_key: "ANTHROPIC_API_KEY"
+    display_name: "Claude_Sonnet_5"
+    temperature: 0
+    max_tokens: 16000
+    omit_temperature: true    # claude-sonnet-5 rejects the temperature parameter
+    pricing_input_per_1m: 3.00
+    pricing_output_per_1m: 15.00
+
+  gemini:
+    provider: "google"
+    model_string: "gemini-3.1-pro-preview"
+    adapter: "gemini_adapter"
+    env_key: "GOOGLE_API_KEY"
+    display_name: "Gemini_3_1_Pro"
+    temperature: 0
+    max_tokens: 8192
+    pricing_input_per_1m: 3.50
+    pricing_output_per_1m: 10.50
+
+  qwen:
+    provider: "alibaba"
+    model_string: "qwen/qwen3.7-plus"
+    adapter: "openrouter_adapter"
+    env_key: "OPENROUTER_API_KEY"
+    display_name: "Qwen_3_7_Plus"
+    temperature: 0
+    max_tokens: 8192          # thinking model — needs room for chain-of-thought
+    pricing_input_per_1m: 0.32
+    pricing_output_per_1m: 1.28
+    is_thinking: true
+
+  glm:
+    provider: "zhipu"
+    model_string: "z-ai/glm-5v-turbo"
+    adapter: "openrouter_adapter"
+    env_key: "OPENROUTER_API_KEY"
+    display_name: "GLM_5V_Turbo"
+    temperature: 0
+    max_tokens: 3000
+    pricing_input_per_1m: 1.20
+    pricing_output_per_1m: 4.00
+    is_thinking: true
+
+# --- Retry Policy -----------------------------------------------------------
+retry:
+  max_retries: 3
+  base_delay_seconds: 2.0
+  jitter_max_seconds: 1.0
+  retry_on_status_codes: [429, 500, 502, 503]
+  do_not_retry_on: [400, 401, 403, 404]
+
+# --- Paths ------------------------------------------------------------------
+paths:
+  raw_images: "data/raw_images"
+  processed_images: "data/processed_images"
+  manifest: "data/manifest.csv"
+  raw_responses: "outputs/raw_responses"
+  validated: "outputs/validated"
+  results_master: "outputs/results_master.xlsx"
+  run_log: "outputs/run_log.csv"
+  prompt_file: "prompts/posas_prompt.txt"
+
+# --- Pilot Mode -------------------------------------------------------------
+# When enabled (via --pilot flag), Stage 3 processes only the first N images.
+pilot:
+  enabled: false
+  max_images: 15
+
+# --- Logging ----------------------------------------------------------------
+logging:
+  level: "INFO"
+  log_file: "outputs/pipeline.log"
+  console_output: true
+
+# --- Supported Image Extensions ---------------------------------------------
+supported_extensions:
+  - ".jpg"
+  - ".jpeg"
+  - ".png"
+  - ".bmp"
+  - ".tiff"
+  - ".tif"
+  - ".webp"
+  - ".heic"
+  - ".heif"

@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "POSAS Observer Scale — MLLM Output",
+  "description": "Schema for MLLM responses: 5 integer observer scores (1-10).",
+  "type": "object",
+  "required": ["observer_scores"],
+  "additionalProperties": false,
+  "properties": {
+    "observer_scores": {
+      "type": "object",
+      "required": ["vascularity", "pigmentation", "thickness", "relief", "surface_area"],
+      "additionalProperties": false,
+      "properties": {
+        "vascularity":  { "type": "integer", "minimum": 1, "maximum": 10 },
+        "pigmentation": { "type": "integer", "minimum": 1, "maximum": 10 },
+        "thickness":    { "type": "integer", "minimum": 1, "maximum": 10 },
+        "relief":       { "type": "integer", "minimum": 1, "maximum": 10 },
+        "surface_area": { "type": "integer", "minimum": 1, "maximum": 10 }
+      }
+    }
+  }
+}

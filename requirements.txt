@@ -1,0 +1,23 @@
+# =============================================================================
+# POSAS-MLLM Benchmark — Python Dependencies
+# =============================================================================
+# Install:  pip install -r requirements.txt
+# =============================================================================
+
+# --- Provider SDKs ----------------------------------------------------------
+openai>=1.30.0            # OpenAI + OpenRouter (OpenAI-compatible endpoint)
+anthropic>=0.25.0         # Anthropic Claude
+google-genai>=2.5.0       # Google Gemini (current SDK — replaces google-generativeai)
+
+# --- Image processing -------------------------------------------------------
+Pillow>=10.3.0            # Resize, compress, EXIF handling
+pillow-heif>=0.18.0       # HEIC/HEIF support (iPhone photos)
+
+# --- Data & config ----------------------------------------------------------
+pyyaml>=6.0               # settings.yaml parsing
+python-dotenv>=1.0.0      # .env file loading
+jsonschema>=4.21.0        # JSON output validation
+openpyxl>=3.1.2           # Excel (.xlsx) export
+
+# --- Token counting ---------------------------------------------------------
+tiktoken>=0.7.0           # Prompt-token estimation for the Stage-3 cost preview
